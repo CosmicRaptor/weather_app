@@ -3,8 +3,8 @@ import 'package:intl/intl.dart';
 import 'package:weather_app/core/platform_bridge.dart';
 import 'package:weather_app/models/current_weather_model.dart';
 
-final weatherProvider = StateNotifierProvider<WeatherViewModel, WeatherState>((ref) {
-  return WeatherViewModel();
+final weatherProvider = StateNotifierProvider.family<WeatherViewModel, WeatherState, String>((ref, city){
+  return WeatherViewModel(city);
 });
 
 class WeatherState {
@@ -40,7 +40,10 @@ class WeatherState {
 }
 
 class WeatherViewModel extends StateNotifier<WeatherState> {
-  WeatherViewModel() : super(const WeatherState());
+  final String cityName;
+  WeatherViewModel(this.cityName) : super(const WeatherState()) {
+    fetchWeather(cityName);
+  }
 
   Future<void> fetchWeather(String city) async {
     state = state.copyWith(isLoading: true, error: null);

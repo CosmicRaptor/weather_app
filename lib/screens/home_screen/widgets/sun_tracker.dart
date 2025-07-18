@@ -74,7 +74,7 @@ class AnimatedSunTracker extends StatelessWidget {
                         // left: 16,
                         child: Container(
                           height: 4,
-                          width: totalWidth * progress - 16, // Adjust for margin
+                          width: progress != 0 ? totalWidth * progress - 16 : 0, // Adjust for margin
                           decoration: BoxDecoration(
                             color: Colors.amberAccent,
                             borderRadius: BorderRadius.circular(8),

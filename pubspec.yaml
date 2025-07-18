@@ -40,6 +40,8 @@ dependencies:
   go_router: ^16.0.0
   intl: any
   json_annotation: ^4.9.0
+  lottie: ^3.3.1
+  shared_preferences: ^2.5.3
 
 dev_dependencies:
   flutter_test:
@@ -70,6 +72,7 @@ flutter:
     - assets/gifs/
     - assets/icons/day/
     - assets/icons/night/
+    - assets/animations/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
