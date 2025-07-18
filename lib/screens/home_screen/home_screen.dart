@@ -1,101 +1,44 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:weather_app/core/utils/no_scroll_behaviour.dart';
-import 'package:weather_app/models/current_weather_model.dart';
+import 'package:weather_app/screens/home_screen/viewmodel/home_screen_viewmodel.dart';
 import 'package:weather_app/screens/home_screen/widgets/background_gif.dart';
 import 'package:weather_app/screens/home_screen/widgets/daily_forecast_container.dart';
-import 'package:weather_app/screens/home_screen/widgets/frosted_glass_container.dart';
 import 'package:weather_app/screens/home_screen/widgets/hourly_forecast_scroller.dart';
+import 'package:weather_app/screens/home_screen/widgets/info_tile.dart';
 import 'package:weather_app/screens/home_screen/widgets/sun_tracker.dart';
 
-import '../../core/platform_bridge.dart';
-
-class WeatherHome extends StatefulWidget {
-  const WeatherHome({super.key});
+class HomeScreen extends ConsumerStatefulWidget {
+  const HomeScreen({super.key});
 
   @override
-  State<WeatherHome> createState() => _WeatherHomeState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _WeatherHomeState extends State<WeatherHome> {
-  final TextEditingController _controller = TextEditingController(text: "Mumbai");
-  WeatherResponse? response;
-  late final sunrise;
-  late final sunset;
-
-  Future<void> _getWeather() async {
-    try {
-      final result = await RustBridge.getWeather(_controller.text);
-      final forecastDay = result.forecast.forecastday[0];
-      final date = DateTime.parse(forecastDay.date); // e.g., "2025-07-18"
-      final format = DateFormat("hh:mm a");
-
-      final sunriseTimeOnly = format.parse(forecastDay.astro.sunrise); // just the time
-      final sunsetTimeOnly = format.parse(forecastDay.astro.sunset);   // just the time
-
-      sunrise = DateTime(date.year, date.month, date.day, sunriseTimeOnly.hour, sunriseTimeOnly.minute);
-      sunset = DateTime(date.year, date.month, date.day, sunsetTimeOnly.hour, sunsetTimeOnly.minute);
-      setState(() => response = result);
-    } catch (e, stackTrace) {
-      debugPrint('Error fetching weather: $e');
-      debugPrint('Stack trace: $stackTrace');
-    }
-  }
-
-  @override
-  void initState() {
-    _getWeather();
-    super.initState();
-  }
-
-  Widget _infoTile(IconData iconUsed, String label, String value) {
-    return FrostedGlassContainer(
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Icon(
-                  iconUsed,
-                  size: constraints.maxWidth * 0.3, // Scales with width
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(height: 4),
-              FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Text(
-                  label,
-                  style: TextStyle(
-                    fontSize: constraints.maxWidth * 0.2, // Scales with width
-                    color: Colors.white70,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 4),
-              FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Text(
-                  value,
-                  style: TextStyle(
-                    fontSize: constraints.maxWidth * 0.2, // Bigger than label
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ],
-          );
-        },
-      ),
-    );
-  }
-
+class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final vm = ref.watch(weatherProvider);
+
+    if (vm.isLoading) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    if (vm.error != null) {
+      return Scaffold(
+        body: Center(
+          child: Text(
+            vm.error!,
+            style: const TextStyle(color: Colors.white, fontSize: 18),
+          ),
+        ),
+      );
+    }
+
+    final response = vm.data;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -139,7 +82,7 @@ class _WeatherHomeState extends State<WeatherHome> {
                               ),
                             ),
                             Text(
-                              "${response!.current.condition.text} ${response!.forecast.forecastday[0].day.mintemp_c.round()}° / ${response!.forecast.forecastday[0].day.maxtemp_c.round()}°",
+                              "${response.current.condition.text} ${response.forecast.forecastday[0].day.mintemp_c.round()}° / ${response.forecast.forecastday[0].day.maxtemp_c.round()}°",
                               style: TextStyle(
                                 fontSize: 30,
                                 color: Colors.white,
@@ -158,10 +101,10 @@ class _WeatherHomeState extends State<WeatherHome> {
                       ),
 
                       // const SizedBox(height: 40),
-                      HourlyForecastScroller(forecast: response!.forecast.forecastday[0].hour + response!.forecast.forecastday[1].hour),
+                      HourlyForecastScroller(forecast: response.forecast.forecastday[0].hour + response.forecast.forecastday[1].hour),
                       const SizedBox(height: 12),
 
-                      DailyForecastContainer(dailyForecast: response!.forecast.forecastday),
+                      DailyForecastContainer(dailyForecast: response.forecast.forecastday),
                       const SizedBox(height: 12),
 
                       Row(
@@ -169,10 +112,10 @@ class _WeatherHomeState extends State<WeatherHome> {
                           Expanded(
                             child: AspectRatio(
                               aspectRatio: 1,
-                              child: _infoTile(
+                              child: InfoTile(
                                 Icons.water_drop_outlined,
                                 "Humidity",
-                                "${response!.current.humidity}%",
+                                "${response.current.humidity}%",
                               ),
                             ),
                           ),
@@ -180,10 +123,10 @@ class _WeatherHomeState extends State<WeatherHome> {
                           Expanded(
                             child: AspectRatio(
                               aspectRatio: 1,
-                              child: _infoTile(
+                              child: InfoTile(
                                 Icons.wb_sunny_outlined,
                                 "UV Index",
-                                response!.current.uv.toString(),
+                                response.current.uv.toString(),
                               ),
                             ),
                           ),
@@ -191,10 +134,10 @@ class _WeatherHomeState extends State<WeatherHome> {
                           Expanded(
                             child: AspectRatio(
                               aspectRatio: 1,
-                              child: _infoTile(
+                              child: InfoTile(
                                 Icons.speed_outlined,
                                 "Pressure",
-                                "${response!.current.pressure_mb} mb",
+                                "${response.current.pressure_mb} mb",
                               ),
                             ),
                           ),
@@ -206,10 +149,10 @@ class _WeatherHomeState extends State<WeatherHome> {
                           Expanded(
                             child: AspectRatio(
                               aspectRatio: 1,
-                              child: _infoTile(
+                              child: InfoTile(
                                 Icons.air_outlined,
                                 "Wind",
-                                "${response!.current.wind_kph} km/h",
+                                "${response.current.wind_kph} km/h",
                               ),
                             ),
                           ),
@@ -217,10 +160,10 @@ class _WeatherHomeState extends State<WeatherHome> {
                           Expanded(
                             child: AspectRatio(
                               aspectRatio: 1,
-                              child: _infoTile(
+                              child: InfoTile(
                                 Icons.remove_red_eye_outlined,
                                 "Visibility",
-                                "${response!.current.vis_km} km",
+                                "${response.current.vis_km} km",
                               ),
                             ),
                           ),
@@ -228,10 +171,10 @@ class _WeatherHomeState extends State<WeatherHome> {
                           Expanded(
                             child: AspectRatio(
                               aspectRatio: 1,
-                              child: _infoTile(
+                              child: InfoTile(
                                 Icons.thermostat_outlined,
                                 "Feels Like",
-                                "${response!.current.feelslike_c}°C",
+                                "${response.current.feelslike_c}°C",
                               ),
                             ),
                           ),
@@ -239,7 +182,7 @@ class _WeatherHomeState extends State<WeatherHome> {
                       ),
 
                       const SizedBox(height: 12),
-                      AnimatedSunTracker(sunrise: sunrise, sunset: sunset, currentTime: DateTime.now()),
+                      AnimatedSunTracker(sunrise: vm.sunrise!, sunset: vm.sunset!, currentTime: DateTime.now()),
                     ],
                   ),
                 ),

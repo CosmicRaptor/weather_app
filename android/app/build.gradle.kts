@@ -22,8 +22,8 @@ val weatherApiKey = run {
 
 android {
     namespace = "com.example.weather_app"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    compileSdk = 35
+    ndkVersion = "27.0.12077973"
 
     buildFeatures {
         buildConfig = true
