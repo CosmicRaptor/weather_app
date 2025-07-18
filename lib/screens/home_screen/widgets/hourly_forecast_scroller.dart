@@ -6,8 +6,14 @@ import 'frosted_glass_container.dart';
 
 class HourlyForecastScroller extends StatelessWidget {
   final List<HourlyForecast> forecast;
+  late final List<HourlyForecast> upcomingForecast;
 
-  const HourlyForecastScroller({super.key, required this.forecast});
+  HourlyForecastScroller({super.key, required this.forecast}) {
+    upcomingForecast = forecast.where((hour) {
+      final time = DateTime.parse(hour.time);
+      return time.isAfter(DateTime.now());
+    }).toList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,10 +24,10 @@ class HourlyForecastScroller extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
-            itemCount: 10, // Display only the first 10 hours
+            itemCount: 24, // Display 24 hours
             separatorBuilder: (_, __) => const SizedBox(width: 12),
             itemBuilder: (context, index) {
-              final hour = forecast[index];
+              final hour = upcomingForecast[index];
               final time = DateTime.parse(hour.time);
               final assetCode = weatherIconMap[hour.condition.code.toString()];
               return Column(
@@ -34,12 +40,12 @@ class HourlyForecastScroller extends StatelessWidget {
                   const SizedBox(height: 4),
                   Image.asset(
                     'assets/icons/day/$assetCode.png', // ex: 'sunny.png'
-                    width: 30,
-                    height: 30,
+                    width: 40,
+                    height: 40,
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    '${hour.temp_c}°C',
+                    '${hour.temp_c.round()}°C',
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w500,

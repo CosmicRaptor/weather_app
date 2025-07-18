@@ -26,6 +26,7 @@ class RustBridge {
   static Future<WeatherResponse> getWeather(String city) async {
     try {
       final String result = await getWeatherRaw(city); // JSON string from Rust
+      debugPrint('Raw weather data: $result');
       final Map<String, dynamic> jsonMap = jsonDecode(result);
       final WeatherResponse response = WeatherResponse.fromJson(jsonMap);
       return response;
