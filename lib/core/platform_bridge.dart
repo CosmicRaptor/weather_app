@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart' hide debugPrint;
 import 'package:flutter/services.dart';
 import 'package:weather_app/models/current_weather_model.dart';
 
@@ -25,15 +26,22 @@ class RustBridge {
 
   static Future<WeatherResponse> getWeather(String city) async {
     try {
-      final String result = await getWeatherRaw(city); // JSON string from Rust
+      final String result = await getWeatherRaw(city);
       debugPrint('Raw weather data: $result');
-      final Map<String, dynamic> jsonMap = jsonDecode(result);
-      final WeatherResponse response = WeatherResponse.fromJson(jsonMap);
+
+      final WeatherResponse response = await compute(_parseWeather, result);
       return response;
     } catch (e) {
       debugPrint('Error fetching weather: $e');
       rethrow;
     }
   }
+
+// This function runs in a separate isolate
+  static WeatherResponse _parseWeather(String jsonString) {
+    final Map<String, dynamic> jsonMap = jsonDecode(jsonString);
+    return WeatherResponse.fromJson(jsonMap);
+  }
+
 
 }
