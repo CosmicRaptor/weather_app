@@ -6,14 +6,45 @@ import 'frosted_glass_container.dart';
 
 class HourlyForecastScroller extends StatelessWidget {
   final List<HourlyForecast> forecast;
+  final DateTime localTime;
+  final DateTime sunrise;
+  final DateTime sunset;
   late final List<HourlyForecast> upcomingForecast;
 
-  HourlyForecastScroller({super.key, required this.forecast}) {
+  HourlyForecastScroller({super.key, required this.forecast, required this.localTime, required this.sunrise, required this.sunset}) {
     upcomingForecast = forecast.where((hour) {
       final time = DateTime.parse(hour.time);
-      return time.isAfter(DateTime.now());
+      return time.isAfter(localTime);
     }).toList();
+    debugPrint('Sunrise: $sunrise, Sunset: $sunset, Local Time: $localTime');
   }
+
+  String isDayTime(DateTime forecastHour) {
+    debugPrint('Checking if $forecastHour is day or night');
+    final thisDaysSunrise = DateTime(
+      forecastHour.year,
+      forecastHour.month,
+      forecastHour.day,
+      sunrise.hour,
+      sunrise.minute,
+    );
+    final thisDaysSunset = DateTime(
+      forecastHour.year,
+      forecastHour.month,
+      forecastHour.day,
+      sunset.hour,
+      sunset.minute,
+    );
+
+    if (forecastHour.isAfter(thisDaysSunrise) && forecastHour.isBefore(thisDaysSunset)) {
+      debugPrint('Daytime for $forecastHour');
+      return 'day';
+    } else {
+      debugPrint('Nighttime for $forecastHour');
+      return 'night';
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +70,7 @@ class HourlyForecastScroller extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Image.asset(
-                    'assets/icons/day/$assetCode.png', // ex: 'sunny.png'
+                    'assets/icons/${isDayTime(time)}/$assetCode.png', // ex: 'sunny.png'
                     width: 40,
                     height: 40,
                   ),

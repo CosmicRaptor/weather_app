@@ -146,7 +146,12 @@ class _HomeScreenBodyState extends ConsumerState<HomeScreenBody> {
                         const SizedBox(height: 40),
                         HourlyForecastScroller(forecast: response.forecast
                             .forecastday[0].hour + response.forecast
-                            .forecastday[1].hour),
+                            .forecastday[1].hour,
+                        localTime: DateTime.parse(
+                                response.location.localtime),
+                        sunrise: vm.sunrise!,
+                          sunset: vm.sunset!,
+                        ),
                         const SizedBox(height: 12),
 
                         DailyForecastContainer(
@@ -230,7 +235,8 @@ class _HomeScreenBodyState extends ConsumerState<HomeScreenBody> {
                         const SizedBox(height: 12),
                         AnimatedSunTracker(sunrise: vm.sunrise!,
                             sunset: vm.sunset!,
-                            currentTime: DateTime.now()),
+                            currentTime: DateTime.parse(
+                                response.location.localtime)),
 
                         const SizedBox(height: 50),
                       ],

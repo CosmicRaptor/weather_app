@@ -3,7 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 import 'package:weather_app/core/get_location.dart';
-import 'package:weather_app/screens/splash_screen/splash_screen.dart';
+
+import '../../core/prefs_storage.dart';
 
 class LocationPermissionScreen extends ConsumerWidget {
   const LocationPermissionScreen({super.key});
@@ -14,7 +15,7 @@ class LocationPermissionScreen extends ConsumerWidget {
     final provider = ref.watch(locationProvider);
     debugPrint('Location updated: ${provider.value?.position}, City: ${provider.value?.city}');
     if (context.mounted) {
-      setOnboardingCompleted();
+      setOnboardingCompleted(ref);
       context.pushReplacement('/home');
     }
   }
