@@ -1,19 +1,49 @@
-# weather_app
+# 🌤️ Flutter Weather App (with Rust via JNI)
 
-A new Flutter project.
+A beautiful, animated Flutter weather app powered by [WeatherAPI](https://www.weatherapi.com/), built with:
 
-## Getting Started
+- 🦀 **Rust** for native weather fetching via `reqwest`
+- 📱 **Flutter** (MVVM + Riverpod) for cross-platform UI
+- 🔌 JNI to bridge Rust <-> Android
+- 🎞️ Weather-based background animations (GIF/WebP)
+- ❄️ Glassmorphic UI with frosted containers
+- 📊 Widgets for hourly and daily forecasts, UV, pressure, sunrise/sunset & more
 
-This project is a starting point for a Flutter application.
+---
 
-A few resources to get you started if this is your first Flutter project:
+## 📸 Preview
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+> *(Add your app preview GIF or screenshots here)*  
+> Example:  
+> ![preview](preview.gif)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+---
 
-local.properties has the API key for weatherapi.com
-dart run build_runner build 
+## 🚀 Features
+
+- 🔄 Real-time weather data (current + 5-day forecast)
+- ❄️ Beautiful glassmorphism UI using `BackdropFilter`
+- 🌁 Animated weather backgrounds using optimized GIFs
+
+---
+## 🛠️ Setup Instructions
+
+### ✅ Prerequisites
+- Flutter SDK
+- Rust
+- Android Studio or VSCode with Android SDK
+- Working Android NDK toolchain
+
+### 🔐 WeatherAPI Key
+Create a local.properties file in your project's android directory:
+
+```
+weatherapi_key=YOUR_API_KEY_HERE
+```
+
+### Build runner
+```
+dart run build_runner build
+```
+
+
