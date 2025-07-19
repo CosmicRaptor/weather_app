@@ -48,16 +48,6 @@ class _AddCitiesScreenState extends ConsumerState<AddCitiesScreen> {
     });
   }
 
-  Future<void> _addCity(String city) async {
-    await saveCity(ref, city);
-    if (mounted) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Added $city to your cities')));
-    }
-    _controller.clear();
-  }
-
   @override
   void dispose() {
     _controller.dispose();
@@ -66,6 +56,8 @@ class _AddCitiesScreenState extends ConsumerState<AddCitiesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final savedCitiesAsync = ref.watch(savedCitiesProvider);
+
     return Scaffold(
       appBar: AppBar(title: const Text('Add Cities')),
       body: Padding(
@@ -97,14 +89,45 @@ class _AddCitiesScreenState extends ConsumerState<AddCitiesScreen> {
 
             // Autocomplete list
             Expanded(
-              child: ListView.builder(
-                itemCount: _filtered.length,
-                itemBuilder: (context, index) {
-                  final city = _filtered[index];
-                  return ListTile(
-                    title: Text('${city.name}, ${city.country}'),
-                    trailing: const Icon(Icons.add),
-                    onTap: () => _addCity(city.name),
+              child: savedCitiesAsync.when(
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (e, _) => Center(child: Text('Error loading saved cities')),
+                data: (savedCities) {
+                  return ListView.builder(
+                    itemCount: _filtered.length,
+                    itemBuilder: (context, index) {
+                      final city = _filtered[index];
+                      final isSaved = savedCities.contains(city.name);
+
+                      return ListTile(
+                        title: Text('${city.name}, ${city.country}'),
+                        trailing: IconButton(
+                          icon: Icon(isSaved ? Icons.remove_circle_outline : Icons.add_circle_outline),
+                          color: isSaved ? Colors.red : Colors.green,
+                          onPressed: () async {
+                            if (isSaved) {
+                              await removeCity(ref, city.name);
+                            } else {
+                              await saveCity(ref, city.name);
+                            }
+
+                            if (mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    isSaved
+                                        ? 'Removed ${city.name} from your cities'
+                                        : 'Added ${city.name} to your cities',
+                                  ),
+                                ),
+                              );
+                            }
+
+                            _controller.clear();
+                          },
+                        ),
+                      );
+                    },
                   );
                 },
               ),

@@ -58,6 +58,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     // Page indicators
                     ...List.generate(cities.length, (index) {
                       final isSelected = index == _currentPage;
+                      if (index == 0) {
+                        return GestureDetector(
+                          onTap: () => _controller.animateToPage(
+                            index,
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeInOut,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 6),
+                            child: Icon(
+                              Icons.location_on_outlined,
+                              size: isSelected ? 20 : 16,
+                              color: isSelected ? Colors.white : Colors.grey,
+                            ),
+                          ),
+                        );
+                      }
                       return GestureDetector(
                         onTap: () => _controller.animateToPage(
                           index,
