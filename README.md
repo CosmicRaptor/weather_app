@@ -13,9 +13,11 @@ A beautiful, animated Flutter weather app powered by [WeatherAPI](https://www.we
 
 ## 📸 Preview
 
-> *(Add your app preview GIF or screenshots here)*  
-> Example:  
-> ![preview](preview.gif)
+
+
+https://github.com/user-attachments/assets/5f20175e-7132-4ef4-a0af-d1e6d6f6561d
+
+
 
 ---
 
