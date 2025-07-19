@@ -51,9 +51,9 @@ class _AddCitiesScreenState extends ConsumerState<AddCitiesScreen> {
   Future<void> _addCity(String city) async {
     await saveCity(ref, city);
     if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Added $city to your cities')),
-    );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Added $city to your cities')));
     }
     _controller.clear();
   }
@@ -67,9 +67,7 @@ class _AddCitiesScreenState extends ConsumerState<AddCitiesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Add Cities'),
-      ),
+      appBar: AppBar(title: const Text('Add Cities')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

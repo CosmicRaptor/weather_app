@@ -67,7 +67,8 @@ class LocationNotifier extends StateNotifier<AsyncValue<LocationState>> {
     if (permission == LocationPermission.deniedForever) {
       // Permissions are denied forever, handle appropriately.
       return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
+        'Location permissions are permanently denied, we cannot request permissions.',
+      );
     }
 
     // When we reach here, permissions are granted and we can
@@ -85,17 +86,17 @@ class LocationNotifier extends StateNotifier<AsyncValue<LocationState>> {
   }
 }
 
-
 final LocationSettings _locationSettings = LocationSettings(
   accuracy: LocationAccuracy.low,
   distanceFilter: 10000,
 );
-AutoDisposeStreamProvider<Position> positionStream = StreamProvider.autoDispose<Position>(
-      (ref) => Geolocator.getPositionStream(locationSettings: _locationSettings),
-);
+AutoDisposeStreamProvider<Position> positionStream =
+    StreamProvider.autoDispose<Position>(
+      (ref) =>
+          Geolocator.getPositionStream(locationSettings: _locationSettings),
+    );
 
 final locationProvider =
-StateNotifierProvider<LocationNotifier, AsyncValue<LocationState>>(
+    StateNotifierProvider<LocationNotifier, AsyncValue<LocationState>>(
       (ref) => LocationNotifier(),
-);
-
+    );

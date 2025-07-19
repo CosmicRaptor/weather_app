@@ -91,7 +91,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           color: Colors.white.withValues(alpha: 0.1),
                           border: Border.all(color: Colors.white24),
                         ),
-                        child: const Icon(Icons.add, color: Colors.white, size: 20),
+                        child: const Icon(
+                          Icons.add,
+                          color: Colors.white,
+                          size: 20,
+                        ),
                       ),
                     ),
                   ],
@@ -104,7 +108,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     final locationAsync = ref.watch(locationProvider);
@@ -115,16 +118,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         body: Center(child: CircularProgressIndicator()),
       ),
       (AsyncError(:final error, :final stackTrace), _) ||
-      (_, AsyncError(:final error, :final stackTrace)) =>
-          Scaffold(
-            body: Center(child: Text('Error: $error, $stackTrace')),
-          ),
-      (AsyncData locationData, AsyncData savedCitiesData) =>
-          _buildPageView(locationData.value.city, savedCitiesData.value),
-      _ => const Scaffold(
-        body: Center(child: Text('Unexpected state')),
+      (
+        _,
+        AsyncError(:final error, :final stackTrace),
+      ) => Scaffold(body: Center(child: Text('Error: $error, $stackTrace'))),
+      (AsyncData locationData, AsyncData savedCitiesData) => _buildPageView(
+        locationData.value.city,
+        savedCitiesData.value,
       ),
+      _ => const Scaffold(body: Center(child: Text('Unexpected state'))),
     };
   }
-
 }

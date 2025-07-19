@@ -86,7 +86,10 @@ class AnimatedSunTracker extends StatelessWidget {
                           Positioned(
                             left: usableWidth * progress,
                             child: Transform.translate(
-                              offset: const Offset(-16, 0), // half of 32 icon size
+                              offset: const Offset(
+                                -16,
+                                0,
+                              ), // half of 32 icon size
                               child: const Icon(
                                 Icons.wb_sunny_rounded,
                                 size: 32,

@@ -18,7 +18,7 @@ class FrostedAppBar extends StatelessWidget {
           centerTitle: false,
           title: Text(
             title,
-            style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 35,),
+            style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 35),
           ),
         ),
       ),

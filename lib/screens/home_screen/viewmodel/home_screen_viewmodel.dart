@@ -3,9 +3,13 @@ import 'package:intl/intl.dart';
 import 'package:weather_app/core/platform_bridge.dart';
 import 'package:weather_app/models/current_weather_model.dart';
 
-final weatherProvider = StateNotifierProvider.family<WeatherViewModel, WeatherState, String>((ref, city){
-  return WeatherViewModel(city);
-});
+final weatherProvider =
+    StateNotifierProvider.family<WeatherViewModel, WeatherState, String>((
+      ref,
+      city,
+    ) {
+      return WeatherViewModel(city);
+    });
 
 class WeatherState {
   final WeatherResponse? data;
@@ -47,8 +51,50 @@ class WeatherViewModel extends StateNotifier<WeatherState> {
 
   String getGifName(int weatherCode) {
     final clearCodes = [1000, 1003, 1006, 1009, 1030, 1087, 1135, 1147];
-    final rainyCodes = [1063, 1069, 1072, 1150, 1153, 1168, 1171, 1180, 1183, 1186, 1189, 1192, 1195, 1198, 1201, 1204, 1207, 1237, 1240, 1243, 1246, 1249, 1252, 1261, 1264, 1273, 1276];
-    final snowyCodes = [1066, 1114, 1117, 1210, 1213, 1216, 1219, 1222, 1225, 1255, 1258, 1279, 1282];
+    final rainyCodes = [
+      1063,
+      1069,
+      1072,
+      1150,
+      1153,
+      1168,
+      1171,
+      1180,
+      1183,
+      1186,
+      1189,
+      1192,
+      1195,
+      1198,
+      1201,
+      1204,
+      1207,
+      1237,
+      1240,
+      1243,
+      1246,
+      1249,
+      1252,
+      1261,
+      1264,
+      1273,
+      1276,
+    ];
+    final snowyCodes = [
+      1066,
+      1114,
+      1117,
+      1210,
+      1213,
+      1216,
+      1219,
+      1222,
+      1225,
+      1255,
+      1258,
+      1279,
+      1282,
+    ];
 
     if (clearCodes.contains(weatherCode)) {
       return "clear.gif";
@@ -59,8 +105,6 @@ class WeatherViewModel extends StateNotifier<WeatherState> {
     } else {
       return "clear.gif"; // Default to clear if no match found
     }
-
-
   }
 
   Future<void> fetchWeather(String city) async {
@@ -75,8 +119,20 @@ class WeatherViewModel extends StateNotifier<WeatherState> {
       final sunriseTime = format.parse(forecastDay.astro.sunrise);
       final sunsetTime = format.parse(forecastDay.astro.sunset);
 
-      final sunrise = DateTime(date.year, date.month, date.day, sunriseTime.hour, sunriseTime.minute);
-      final sunset = DateTime(date.year, date.month, date.day, sunsetTime.hour, sunsetTime.minute);
+      final sunrise = DateTime(
+        date.year,
+        date.month,
+        date.day,
+        sunriseTime.hour,
+        sunriseTime.minute,
+      );
+      final sunset = DateTime(
+        date.year,
+        date.month,
+        date.day,
+        sunsetTime.hour,
+        sunsetTime.minute,
+      );
 
       state = state.copyWith(
         data: result,

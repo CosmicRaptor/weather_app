@@ -13,7 +13,9 @@ class LocationPermissionScreen extends ConsumerWidget {
     final notif = ref.read(locationProvider.notifier);
     await notif.updateLocation(); // Handles both position and city
     final provider = ref.watch(locationProvider);
-    debugPrint('Location updated: ${provider.value?.position}, City: ${provider.value?.city}');
+    debugPrint(
+      'Location updated: ${provider.value?.position}, City: ${provider.value?.city}',
+    );
     if (context.mounted) {
       setOnboardingCompleted(ref);
       context.pushReplacement('/home');
@@ -45,10 +47,7 @@ class LocationPermissionScreen extends ConsumerWidget {
               // Title
               const Text(
                 'Enable Location Access',
-                style: TextStyle(
-                  fontSize: 26,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
 
@@ -57,10 +56,7 @@ class LocationPermissionScreen extends ConsumerWidget {
               // Subtext
               Text(
                 'We use your location to show local weather updates and forecasts.',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey[800],
-                ),
+                style: TextStyle(fontSize: 16, color: Colors.grey[800]),
                 textAlign: TextAlign.center,
               ),
 
@@ -82,21 +78,23 @@ class LocationPermissionScreen extends ConsumerWidget {
                   ),
                   child: locationState is AsyncLoading
                       ? const SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 3,
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.black87),
-                    ),
-                  )
+                          width: 24,
+                          height: 24,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 3,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              Colors.black87,
+                            ),
+                          ),
+                        )
                       : const Text(
-                    'Enable Location',
-                    style: TextStyle(
-                      color: Colors.black87,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
+                          'Enable Location',
+                          style: TextStyle(
+                            color: Colors.black87,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
                 ),
               ),
 

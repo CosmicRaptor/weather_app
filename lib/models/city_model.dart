@@ -21,11 +21,9 @@ class CityModel {
   final String name;
   final String country;
 
-  CityModel({
-    required this.name,
-    required this.country,
-  });
+  CityModel({required this.name, required this.country});
 
-  factory CityModel.fromJson(Map<String, dynamic> json) => _$CityModelFromJson(json);
+  factory CityModel.fromJson(Map<String, dynamic> json) =>
+      _$CityModelFromJson(json);
   Map<String, dynamic> toJson() => _$CityModelToJson(this);
 }

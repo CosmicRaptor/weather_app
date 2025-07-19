@@ -7,14 +7,8 @@ import 'package:weather_app/screens/splash_screen/splash_screen.dart';
 
 final routerConf = GoRouter(
   routes: [
-    GoRoute(
-      path: '/',
-      builder: (context, state) => SplashScreen(),
-    ),
-    GoRoute(
-      path: '/home',
-      builder: (context, state) => const HomeScreen(),
-    ),
+    GoRoute(path: '/', builder: (context, state) => SplashScreen()),
+    GoRoute(path: '/home', builder: (context, state) => const HomeScreen()),
     GoRoute(
       path: '/onboarding',
       builder: (context, state) => const OnboardingScreen(),

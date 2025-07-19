@@ -11,7 +11,13 @@ class HourlyForecastScroller extends StatelessWidget {
   final DateTime sunset;
   late final List<HourlyForecast> upcomingForecast;
 
-  HourlyForecastScroller({super.key, required this.forecast, required this.localTime, required this.sunrise, required this.sunset}) {
+  HourlyForecastScroller({
+    super.key,
+    required this.forecast,
+    required this.localTime,
+    required this.sunrise,
+    required this.sunset,
+  }) {
     upcomingForecast = forecast.where((hour) {
       final time = DateTime.parse(hour.time);
       return time.isAfter(localTime);
@@ -36,7 +42,8 @@ class HourlyForecastScroller extends StatelessWidget {
       sunset.minute,
     );
 
-    if (forecastHour.isAfter(thisDaysSunrise) && forecastHour.isBefore(thisDaysSunset)) {
+    if (forecastHour.isAfter(thisDaysSunrise) &&
+        forecastHour.isBefore(thisDaysSunset)) {
       debugPrint('Daytime for $forecastHour');
       return 'day';
     } else {
@@ -44,7 +51,6 @@ class HourlyForecastScroller extends StatelessWidget {
       return 'night';
     }
   }
-
 
   @override
   Widget build(BuildContext context) {

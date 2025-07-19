@@ -15,7 +15,8 @@ class DailyForecastContainer extends StatelessWidget {
         children: [
           ...dailyForecast.map((day) {
             final date = DateTime.parse(day.date);
-            final iconUrl = 'assets/icons/day/${weatherIconMap[day.day.condition.code.toString()]}.png';
+            final iconUrl =
+                'assets/icons/day/${weatherIconMap[day.day.condition.code.toString()]}.png';
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Row(
@@ -38,12 +39,19 @@ class DailyForecastContainer extends StatelessWidget {
                       children: [
                         Text(
                           "${day.day.mintemp_c.round()}°",
-                          style: const TextStyle(color: Colors.white70, fontSize: 20),
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontSize: 20,
+                          ),
                         ),
                         const SizedBox(width: 8),
                         Text(
                           "${day.day.maxtemp_c.round()}°",
-                          style: const TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ],
                     ),

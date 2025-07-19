@@ -116,7 +116,8 @@ class ForecastModel {
 
   ForecastModel({required this.forecastday});
 
-  factory ForecastModel.fromJson(Map<String, dynamic> json) => _$ForecastModelFromJson(json);
+  factory ForecastModel.fromJson(Map<String, dynamic> json) =>
+      _$ForecastModelFromJson(json);
   Map<String, dynamic> toJson() => _$ForecastModelToJson(this);
 }
 
@@ -136,7 +137,8 @@ class ForecastDay {
     required this.hour,
   });
 
-  factory ForecastDay.fromJson(Map<String, dynamic> json) => _$ForecastDayFromJson(json);
+  factory ForecastDay.fromJson(Map<String, dynamic> json) =>
+      _$ForecastDayFromJson(json);
   Map<String, dynamic> toJson() => _$ForecastDayToJson(this);
 }
 
@@ -233,7 +235,8 @@ class HourlyForecast {
     required this.feelslike_f,
   });
 
-  factory HourlyForecast.fromJson(Map<String, dynamic> json) => _$HourlyForecastFromJson(json);
+  factory HourlyForecast.fromJson(Map<String, dynamic> json) =>
+      _$HourlyForecastFromJson(json);
   Map<String, dynamic> toJson() => _$HourlyForecastToJson(this);
 }
 
@@ -261,6 +264,7 @@ class AirQuality {
     required this.gbDefraIndex,
   });
 
-  factory AirQuality.fromJson(Map<String, dynamic> json) => _$AirQualityFromJson(json);
+  factory AirQuality.fromJson(Map<String, dynamic> json) =>
+      _$AirQualityFromJson(json);
   Map<String, dynamic> toJson() => _$AirQualityToJson(this);
 }

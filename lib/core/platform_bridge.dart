@@ -8,16 +8,15 @@ import 'package:weather_app/models/current_weather_model.dart';
 import 'utils/debug_print.dart';
 
 class RustBridge {
-  static const MethodChannel _channel = MethodChannel('com.example.weather_app/channel');
+  static const MethodChannel _channel = MethodChannel(
+    'com.example.weather_app/channel',
+  );
 
   static Future<String> getWeatherRaw(String city) async {
     try {
-      final String result = await _channel.invokeMethod(
-        'getWeatherFromRust',
-        {
-          'city': city,
-        },
-      );
+      final String result = await _channel.invokeMethod('getWeatherFromRust', {
+        'city': city,
+      });
       return result;
     } on PlatformException catch (e) {
       debugPrint('RustBridge error: ${e.message}');
@@ -38,7 +37,7 @@ class RustBridge {
     }
   }
 
-// This function runs in a separate isolate
+  // This function runs in a separate isolate
   static WeatherResponse _parseWeather(String jsonString) {
     final Map<String, dynamic> jsonMap = jsonDecode(jsonString);
     return WeatherResponse.fromJson(jsonMap);
@@ -46,21 +45,20 @@ class RustBridge {
 
   static Future<List<CityModel>> searchCities(String input) async {
     try {
-      final String result = await _channel.invokeMethod('searchCitiesFromRust',
-        {
-          'query': input,
-        },
+      final String result = await _channel.invokeMethod(
+        'searchCitiesFromRust',
+        {'query': input},
       );
       debugPrint('Raw cities data: $result');
 
       final List<dynamic> jsonList = jsonDecode(result);
-      final List<CityModel> cities = jsonList.map((json) => CityModel.fromJson(json)).toList();
+      final List<CityModel> cities = jsonList
+          .map((json) => CityModel.fromJson(json))
+          .toList();
       return cities;
     } on PlatformException catch (e) {
       debugPrint('RustBridge error: ${e.message}');
       rethrow;
     }
   }
-
-
 }
