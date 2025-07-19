@@ -105,7 +105,7 @@ class LocationPermissionScreen extends ConsumerWidget {
               // Skip
               TextButton(
                 onPressed: () {
-                  // TODO: Handle skip logic (maybe continue to next onboarding page)
+                  context.go('/add-city');
                 },
                 child: Text(
                   'Skip for now',
