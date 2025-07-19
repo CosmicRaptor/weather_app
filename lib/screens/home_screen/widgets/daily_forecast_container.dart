@@ -51,7 +51,7 @@ class DailyForecastContainer extends StatelessWidget {
                 ],
               ),
             );
-          }).toList(),
+          }),
         ],
       ),
     );
