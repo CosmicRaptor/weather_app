@@ -17,6 +17,8 @@ A beautiful, animated Flutter weather app powered by [WeatherAPI](https://www.we
 
 https://github.com/user-attachments/assets/5f20175e-7132-4ef4-a0af-d1e6d6f6561d
 
+<a target="_blank" href="https://icons8.com/icon/Kp3P6lR6ggpq/weather-app">Weather App</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+
 
 
 ---
