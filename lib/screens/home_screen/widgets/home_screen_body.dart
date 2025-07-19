@@ -23,6 +23,7 @@ class _HomeScreenBodyState extends ConsumerState<HomeScreenBody> {
   Widget build (BuildContext context) {
     final city = widget.city;
     final vm = ref.watch(weatherProvider(city));
+    final viewModel = ref.read(weatherProvider(city).notifier);
 
     if (vm.isLoading) {
       debugPrint("Loading weather data for $city...");
@@ -50,7 +51,9 @@ class _HomeScreenBodyState extends ConsumerState<HomeScreenBody> {
     debugPrint("Weather data loaded for $city: ${response?.current.condition.text}");
     return Stack(
         children: [
-          const BackgroundGif(gifName: 'rain.gif'),
+          if (response != null)
+          BackgroundGif(gifName: viewModel.getGifName(
+              response.current.condition.code)),
           if (response != null)
             Positioned.fill(
               child: SafeArea(

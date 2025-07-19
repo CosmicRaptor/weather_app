@@ -45,6 +45,24 @@ class WeatherViewModel extends StateNotifier<WeatherState> {
     fetchWeather(cityName);
   }
 
+  String getGifName(int weatherCode) {
+    final clearCodes = [1000, 1003, 1006, 1009, 1030, 1087, 1135, 1147];
+    final rainyCodes = [1063, 1069, 1072, 1150, 1153, 1168, 1171, 1180, 1183, 1186, 1189, 1192, 1195, 1198, 1201, 1204, 1207, 1237, 1240, 1243, 1246, 1249, 1252, 1261, 1264, 1273, 1276];
+    final snowyCodes = [1066, 1114, 1117, 1210, 1213, 1216, 1219, 1222, 1225, 1255, 1258, 1279, 1282];
+
+    if (clearCodes.contains(weatherCode)) {
+      return "clear.gif";
+    } else if (rainyCodes.contains(weatherCode)) {
+      return "rain.gif";
+    } else if (snowyCodes.contains(weatherCode)) {
+      return "snow.gif";
+    } else {
+      return "clear.gif"; // Default to clear if no match found
+    }
+
+
+  }
+
   Future<void> fetchWeather(String city) async {
     state = state.copyWith(isLoading: true, error: null);
 
